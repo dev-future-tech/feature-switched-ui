@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MaterialModule } from '../material/material.module';
 
 import { PuppyListingComponent } from './puppy-listing.component';
 
@@ -8,6 +9,7 @@ describe('PuppyListingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [ PuppyListingComponent ]
     })
     .compileComponents();

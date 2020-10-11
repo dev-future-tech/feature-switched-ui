@@ -19,4 +19,7 @@
       {{pet.age}}
     </td>
   </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
 </table>

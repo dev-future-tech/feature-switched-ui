@@ -29,4 +29,28 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # Feature Switching
 
-The flag will encompass a drop down that allowsd filtering by species
+This library consists of:
+
+* FlagRService
+  * The interface with the FlagR server
+* FlagRComponent
+  * A component that will render the body based on the flagID and entityID passed in.
+
+In order to be getting the right results, you need to track the VariantID. This is similar to a session id.
+
+For example, with a Segment rollout of 50% evaluating the following EntityIDs resulted in:
+
+| EntityID | Variant ID | Variant Key |
+| -------- | ---------- | ------------- |
+| randomly_generated_911902086 | 5 | 'off' |
+| randomly_generated_911902085 | None | None |
+| randomly_generated_911902084 | 4 | 'on' |
+| randomly_generated_911902083 | 4 | 'on' |
+| randomly_generated_911902082 | None | None |
+| randomly_generated_911902081 | None | None |
+| randomly_generated_911902080 | None | None |
+| randomly_generated_911902079 | None | None |
+| randomly_generated_911902078 | 4 | 'on' |
+
+In order for all clients to get a flag value, you need to set the segment rollout to equal 100%.
+
