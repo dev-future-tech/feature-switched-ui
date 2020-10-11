@@ -26,9 +26,6 @@ jobs:
         with:
           node-version: '10.x'
           
-      - name: action-yarn
-        uses: comchangs/action-yarn@v0.1-beta
-  
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: yarn
