@@ -1,5 +1,7 @@
 # FeatureSwitchedUi
 
+![CI](https://github.com/dev-future-tech/feature-switched-ui/workflows/CI/badge.svg)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.1.
 
 ## Development server
