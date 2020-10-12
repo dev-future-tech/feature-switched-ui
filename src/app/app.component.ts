@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
+    /*
     let flag: Flag;
 
     const sample$ = this.service.validateFlag('log_welcomes').pipe(
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
 
         });
       });
-
+  */
   }
 }
 

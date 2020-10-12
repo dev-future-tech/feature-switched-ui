@@ -56,3 +56,106 @@ For example, with a Segment rollout of 50% evaluating the following EntityIDs re
 
 In order for all clients to get a flag value, you need to set the segment rollout to equal 100%.
 
+
+## Tracking the User
+
+When using the FlagRService you need to track a user identifier (`entityID`) to ensure a consistent experience:
+
+**EvaluationRequest**
+```json
+{
+  "entityID" : "user1234",
+  "entityType": "people",
+  "enableDebug": false,
+  "flagKey": "new_cart_experience"
+}
+```
+
+**EvaluationResponse**
+```json
+{
+  "evalContext": {
+    "entityID": "user1234",
+    "entityType": "people",
+    "flagKey": "new_cart_experience"
+  },
+  "evalDebugLog": {
+    "segmentDebugLogs": []
+  },
+  "flagID": 2,
+  "flagKey": "new_cart_experience",
+  "flagSnapshotID": 22,
+  "segmentID": 2,
+  "timestamp": "2020-10-12T17:59:52Z",
+  "variantAttachment": {},
+  "variantID": 4,
+  "variantKey": "on"
+}
+```
+
+If the entityID is not provided, then FlagR will automatically generate one which you can use to track:
+
+**EvaluationRequest**
+```json
+{
+  "entityType": "people",
+  "enableDebug": false,
+  "flagKey": "new_cart_experience"
+}
+```
+**EvaluationResponse**
+```json
+{
+  "evalContext": {
+    "entityID": "randomly_generated_140954425",
+    "entityType": "people",
+    "flagKey": "new_cart_experience"
+  },
+  "evalDebugLog": {
+    "segmentDebugLogs": []
+  },
+  "flagID": 2,
+  "flagKey": "new_cart_experience",
+  "flagSnapshotID": 22,
+  "segmentID": 2,
+  "timestamp": "2020-10-12T17:58:57Z",
+  "variantAttachment": {},
+  "variantID": 4,
+  "variantKey": "on"
+}
+```
+**EvaluationRequest**
+```json
+{
+  "entityID" : "randomly_generated_140954425",
+  "entityType": "people",
+  "enableDebug": false,
+  "flagKey": "new_cart_experience"
+}
+```
+
+**EvaluationResponse**
+```json
+{
+  "evalContext": {
+    "entityID": "randomly_generated_140954425",
+    "entityType": "people",
+    "flagKey": "new_cart_experience"
+  },
+  "evalDebugLog": {
+    "segmentDebugLogs": []
+  },
+  "flagID": 2,
+  "flagKey": "new_cart_experience",
+  "flagSnapshotID": 22,
+  "segmentID": 2,
+  "timestamp": "2020-10-12T18:02:11Z",
+  "variantAttachment": {},
+  "variantID": 4,
+  "variantKey": "on"
+}
+```
+
+Make sure you track the `entityID` in the session.
+
+If you do not track the `entityID`, you may end up with some random states.

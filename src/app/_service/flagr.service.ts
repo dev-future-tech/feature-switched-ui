@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FlagrOptions } from './flagroptions';
 import { Flag, Variant, Segment } from './flag';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, mergeMap } from 'rxjs/operators';
 import { EvaluationRequest, EvaluationResponse } from './evaluation';
 
@@ -10,16 +10,16 @@ import { EvaluationRequest, EvaluationResponse } from './evaluation';
   providedIn: 'root'
 })
 export class FlagrService {
+  private readonly _entityId = new BehaviorSubject<string>('');
+  readonly entityId$ = this._entityId.asObservable();
 
   flagrHost: string;
+
 
   constructor(private http: HttpClient) { }
 
   public async init(options: FlagrOptions = {}) {
     this.flagrHost = options.flagr_host;
-
-    //ping the server.
-    const healthCheck = `${this.flagrHost}/health`;
 
   }
 
@@ -54,12 +54,12 @@ export class FlagrService {
     return this.http.get<Flag>(get);
   }
 
-  evaluateFlag(flagId: number, flagKey: string) : Observable<EvaluationResponse> {
+  evaluateFlag(flagId: number, flagKey: string, entityId: string) : Observable<EvaluationResponse> {
 
     const post = `${this.flagrHost}/evaluation`;
 
     const request: EvaluationRequest = {
-      entityID: 'user1234',
+      entityID: entityId,
       entityType: 'people',
       flagKey: flagKey,
       flagID: flagId,
@@ -76,5 +76,13 @@ export class FlagrService {
   getVariants(flagId: number) : Observable<Variant[]> {
     const get = `${this.flagrHost}/flags/${flagId}/variants`;
     return this.http.get<Variant[]>(get);
+  }
+
+  get entityId(): string {
+    return this._entityId.getValue();
+  }
+
+  set entityId(entityId: string) {
+    this._entityId.next(entityId);
   }
 }
