@@ -20,7 +20,6 @@ export class FlagrService {
 
   public async init(options: FlagrOptions = {}) {
     this.flagrHost = options.flagr_host;
-
   }
 
   public validateFlag(flag_key: string): Observable<Flag> {
@@ -54,12 +53,18 @@ export class FlagrService {
     return this.http.get<Flag>(get);
   }
 
-  evaluateFlag(flagId: number, flagKey: string, entityId: string) : Observable<EvaluationResponse> {
-
+  evaluateFlag(flagId: number, flagKey: string, userId: string) : Observable<EvaluationResponse> {
+    console.log(`1. EntityId: ${this.entityId}`);
     const post = `${this.flagrHost}/evaluation`;
+    if (userId === undefined && this.entityId !== '') {
+      console.log(`Entity ID not supplied, setting to ${this.entityId}`);
+      userId = this.entityId;
+    }
+
+    console.log(`2. EntityId: ${this.entityId}, loca var entityId: ${userId}`);
 
     const request: EvaluationRequest = {
-      entityID: entityId,
+      entityID: userId,
       entityType: 'people',
       flagKey: flagKey,
       flagID: flagId,
@@ -70,7 +75,14 @@ export class FlagrService {
     };
 
     console.log(request);
-    return this.http.post<EvaluationResponse>(post, request);
+    const evaluation$ = this.http.post<EvaluationResponse>(post, request).pipe(
+      tap(result => {
+        console.log(`Setting service entityId to ${result.evalContext.entityID}`);
+        this._entityId.next(result.evalContext.entityID);
+        return result;
+      })
+    );
+    return evaluation$;
   }
 
   getVariants(flagId: number) : Observable<Variant[]> {

@@ -35,12 +35,6 @@ export class FlagrComponent implements OnInit {
         console.log(`Evaluation Response: ${JSON.stringify(value)}`);
         console.log(`Flag status: ${value.variantKey}`);
         this.flagValue = value.variantKey;
-        if (this.service.entityId === '') {
-          console.log(`Setting service entityId to ${value.evalContext.entityID}`);
-          this.service.entityId =value.evalContext.entityID;
-        } else {
-          console.log('Not setting entityId');
-        }
         console.log(`Service entityId is: ${this.service.entityId}`);
 
       })

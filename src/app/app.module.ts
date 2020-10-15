@@ -12,13 +12,15 @@ import { FlagrService } from './_service/flagr.service';
 import { MaterialModule } from './material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FlagrComponent } from './flagr/flagr.component';
+import { PetFoodComponent } from './pet-food/pet-food.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PuppyListingComponent,
     PetSearchComponent,
-    FlagrComponent
+    FlagrComponent,
+    PetFoodComponent
   ],
   imports: [
     BrowserModule,
