@@ -54,22 +54,20 @@ export class FlagrService {
   }
 
   evaluateFlag(flagId: number, flagKey: string, userId: string) : Observable<EvaluationResponse> {
-    console.log(`1. EntityId: ${this.entityId}`);
+    console.log(`1. EntityId: ${this.entityId}, userId: ${userId}, ${typeof userId}`);
     const post = `${this.flagrHost}/evaluation`;
-    if (userId === undefined && this.entityId !== '') {
-      console.log(`Entity ID not supplied, setting to ${this.entityId}`);
-      userId = this.entityId;
-    }
 
-    console.log(`2. EntityId: ${this.entityId}, loca var entityId: ${userId}`);
+    let sendUserId = (userId !== 'undefined') ? userId : this.entityId;
+
+    console.log(`2. EntityId: ${this.entityId}, sendUserId: ${sendUserId}`);
 
     const request: EvaluationRequest = {
-      entityID: userId,
+      entityID: sendUserId,
       entityType: 'people',
       flagKey: flagKey,
       flagID: flagId,
       entityContext: {
-        "hello" : "world"
+        "gender" : "female"
       },
       enableDebug: true
     };

@@ -16,9 +16,6 @@ export class FlagrComponent implements OnInit {
   flagKey: string;
 
   @Input()
-  entityId: string;
-
-  @Input()
   variantValue: string;
 
   @Input()
@@ -29,13 +26,21 @@ export class FlagrComponent implements OnInit {
   constructor(private service: FlagrService) { }
 
   ngOnInit(): void {
-    console.log(`EntityID is ${this.entityId} service entityId is: ${this.service.entityId}`);
-    const evaluation$ = this.service.evaluateFlag(this.flagId, this.flagKey, this.entityId).pipe(
+    let localEntityId;
+
+    if (localStorage.getItem('flagr-entity-id') !== undefined) {
+      localEntityId = localStorage.getItem('flagr-entity-id');
+    }
+
+    console.log(`Service entityId is: ${this.service.entityId}, local entityId is: ${localEntityId}`);
+
+    const evaluation$ = this.service.evaluateFlag(this.flagId, this.flagKey, localEntityId).pipe(
       tap(value => {
         console.log(`Evaluation Response: ${JSON.stringify(value)}`);
         console.log(`Flag status: ${value.variantKey}`);
         this.flagValue = value.variantKey;
         console.log(`Service entityId is: ${this.service.entityId}`);
+        localStorage.setItem('flagr-entity-id', value.evalContext.entityID);
 
       })
     );
